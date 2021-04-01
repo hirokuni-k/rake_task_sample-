@@ -9,14 +9,16 @@ namespace :import_csv do
     end
     puts "インポート処理を開始"
     begin
-      User.create!(list)
-      puts "インポート完了!!"
+      User.transaction do
+        User.create!(list)
+      end
+      puts "インポート完了!!".green
     rescue StandardError => e
-      puts "#{e.class}: #{e.message}"
+      puts "#{e.class}: #{e.message}".red
       puts "-------------------------"
       puts e.backtrace 
       puts "-------------------------"
-      puts "インポートに失敗"
+      puts "インポートに失敗".red
     end
   end
 end
